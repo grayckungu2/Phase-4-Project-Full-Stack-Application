@@ -11,6 +11,34 @@ fake = Faker()
 # C application context
 app.app_context().push()
 
+# Real movie titles and genres
+real_movie_titles = [
+    "The Shawshank Redemption",
+    "The Godfather",
+    "Pulp Fiction",
+    "The Dark Knight",
+    "Schindler's List",
+    "Forrest Gump",
+    "The Matrix",
+    "Titanic",
+    "Gladiator",
+    "Inception",
+    # Add more movie titles here
+]
+
+real_movie_genres = [
+    "Drama",
+    "Crime",
+    "Action",
+    "Adventure",
+    "Science Fiction",
+    "Romance",
+    "Fantasy",
+    "Thriller",
+    "War",
+    # Add more genres here
+]
+
 # D function to seed user data
 def seed_users(num_users):
     for _ in range(num_users):
@@ -21,17 +49,19 @@ def seed_users(num_users):
         )
         db.session.add(user)
     db.session.commit()
-#function to seed movie data
+
+# Modify seed_movies function to use real movie titles and genres
 def seed_movies(num_movies):
     for _ in range(num_movies):
         movie = Movie(
-            title=fake.catch_phrase(),
+            title=fake.random_element(elements=real_movie_titles),  # Use real movie titles
             release_date=fake.date_this_decade(),
-            genre=fake.word(),
-            creator_id=fake.random_element(User.query.all()).id  
+            genre=fake.random_element(elements=real_movie_genres),  # Use real movie genres
+            creator_id=fake.random_element(User.query.all()).id
         )
         db.session.add(movie)
     db.session.commit()
+
 # function to seed review data
 def seed_reviews(num_reviews):
     for _ in range(num_reviews):
@@ -58,8 +88,8 @@ def seed_user_movies(num_user_movies):
     db.session.commit()
 
 if __name__ == '__main__':
-    num_users = 10  
-    num_movies = 20  
+    num_users = 20  
+    num_movies = 25 
     num_reviews = 50  
     num_user_movies = 30  
 
