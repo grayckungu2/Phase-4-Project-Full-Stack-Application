@@ -52,7 +52,7 @@ def create_app():
     def register():
         form = RegistrationForm(request.form)
         if request.method == 'POST' and form.validate():
-            # Here, you would typically add the user to your database
+            #
             flash('Thanks for registering')
             return redirect(url_for('login'))
         return render_template('register.html', form=form)
@@ -62,15 +62,14 @@ def create_app():
     def login():
         form = LoginForm(request.form)
         if request.method == 'POST' and form.validate():
-            # Here, you would typically authenticate the user (check credentials)
+            #  typically authenticate the user (check credentials)
             flash('Logged in successfully')
             return redirect(url_for('dashboard'))
         return render_template('login.html', form=form)
 
-    # Dashboard route (just as an example)
     @app.route('/dashboard')
     def dashboard():
-        return 'Welcome to the dashboard!'
+        return 'Welcome to the MovieReview'
 
     # REST API routes for movies and reviews           
 
@@ -198,7 +197,7 @@ def create_app():
     def create_movie():
         data = request.json
         title = data['title']
-        release_date_str = data['release_date']  # Get the release_date as a string
+        release_date_str = data['release_date']  
         genre = data['genre']
         creator_id = data['creator_id']
 
