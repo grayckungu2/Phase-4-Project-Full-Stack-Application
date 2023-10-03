@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, g
 from flask_cors import CORS
 from models.movie import Movie
 from models.review import Review
+from models.usermovie import UserMovie
 from models.user import User
 import os
 from models.dbconfig import db
