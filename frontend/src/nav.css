@@ -1,0 +1,40 @@
+.navbar {
+    background-color: #343a40; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 20px; 
+  }
+  
+  /* Style the navbar brand text */
+  .navbar-brand {
+    color: #fff; 
+    margin: 0; 
+    font-size: 1.5rem;
+    flex: 1; 
+  }
+  
+  /* Style the navigation links */
+  .nav {
+    list-style: none; 
+    display: flex; 
+    margin: 0; 
+    padding: 0; 
+    justify-content: flex-end; 
+  }
+  
+  .nav-item {
+    margin-left: 10px; 
+  }
+  
+  /* Style the navigation link text */
+  .nav-link {
+    color: #fff !important; 
+    text-decoration: none !important;
+  }
+  
+  /* Style the active navigation link (optional) */
+  .nav-link.active {
+    font-weight: bold; 
+  }
+  

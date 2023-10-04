@@ -1,14 +1,41 @@
-//Header Component: Provides navigation links to various sections of the application, including login, registration, movie list, user profile, etc.
-//Footer Component: Typically includes links to ot
+import React from "react";
+import { Link } from "react-router-dom";
+import '../nav.css';
 
 const NavigationBar = () => {
-    return ( 
-        <>
-        
-        </>
+  return (
+    <nav className="navbar bg-dark border-bottom border-body text-white" data-bs-theme="dark">
+      <div className="container-fluid">
+        <div className="navbar-header">
+          <h1 className="navbar-brand">Movie Review</h1>
+        </div>
+        <div className="navbar-links">
+          <ul className="nav">
+            <li className="nav-item">
+              <Link to="/" className="nav-link text-white">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Login" className="nav-link text-white">
+                Login
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Movies" className="nav-link text-white">
+                Movies
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Reviews" className="nav-link text-white">
+                Reviews
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+};
 
-
-    );
-}
- 
 export default NavigationBar;
