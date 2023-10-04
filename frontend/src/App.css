@@ -1,38 +1,50 @@
-.App {
-  text-align: center;
+/* ReviewList.css */
+.review-list {
+  margin: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.review-list h2 {
+  font-size: 24px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.review-list ul {
+  list-style-type: none;
+  padding: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.review-list .new-review {
+  margin-top: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.review-list .new-review input {
+  margin-right: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.review-list .new-review button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.review-list .new-review button:hover {
+  background-color: #0056b3;
+}
+/* ReviewItem.css */
+.review-item {
+  margin-bottom: 20px;
+}
+
+.review-item .card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.review-item .card-body {
+  padding: 10px;
+}
+
+.review-item .edit-button {
+  margin-right: 10px;
 }

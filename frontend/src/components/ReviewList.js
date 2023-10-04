@@ -1,76 +1,114 @@
 import React, { useState, useEffect } from 'react';
+import { Card, Button, Modal, Form } from 'react-bootstrap';
 
 function ReviewList({ movieId }) {
   const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState({ user_id: '', rating: '', review_text: '' });
+  const [showModal, setShowModal] = useState(false);
+  const [selectedReview, setSelectedReview] = useState(null);
+  const [searchReviewId, setSearchReviewId] = useState('');
+  const [searchedReview, setSearchedReview] = useState(null);
 
-  // Fetch reviews for the specific movie
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/movies/${movieId}/reviews`)
-      .then((response) => response.json())
-      .then((data) => setReviews(data.reviews))
-      .catch((error) => console.error('Error fetching reviews:', error));
+    const fetchReviews = async () => {
+      try {
+        let url = `http://127.0.0.1:5000/reviews`;
+        if (movieId) {
+          url = `http://127.0.0.1:5000/movies/${movieId}/reviews`;
+        }
+
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          setReviews(data.reviews);
+        } else {
+          console.error('Error fetching reviews:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
+
+    fetchReviews();
   }, [movieId]);
 
-  // Handle form submission to create a new review
-  const handleReviewSubmit = (e) => {
-    e.preventDefault();
-    fetch(`http://127.0.0.1:5000/movies/${movieId}/reviews`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newReview),
-    })
-      .then((response) => response.json())
-      .then(() => {
-        // Refresh the reviews list after creating a new review
-        fetch(`http://127.0.0.1:5000/movies/${movieId}/reviews`)
-          .then((response) => response.json())
-          .then((data) => setReviews(data.reviews))
-          .catch((error) => console.error('Error fetching reviews:', error));
-      })
-      .catch((error) => console.error('Error creating review:', error));
+  const handleReviewClick = (review) => {
+    setSelectedReview(review);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedReview(null);
+    setShowModal(false);
+  };
+
+  const handleSearchReview = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/reviews/${searchReviewId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setSearchedReview(data); // Set the searched review
+        setShowModal(true); // Show modal with the searched review
+      } else {
+        console.error('Error fetching review by ID:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching review by ID:', error);
+    }
   };
 
   return (
     <div>
-      <h2>Movie Reviews</h2>
-      <ul>
-        {reviews.map((review) => (
-          <li key={review.id}>{review.review_text}</li>
-        ))}
-      </ul>
-      <h3>Create a Review</h3>
-      <form onSubmit={handleReviewSubmit}>
-        <label>
-          User ID:
-          <input
+      <h2>{movieId ? 'Reviews for Movie' : 'All Reviews'}</h2>
+      <Form>
+        <Form.Group controlId="formReviewId">
+          <Form.Label>Search Review by ID</Form.Label>
+          <Form.Control
             type="number"
-            value={newReview.user_id}
-            onChange={(e) => setNewReview({ ...newReview, user_id: e.target.value })}
-            required
+            placeholder="Review ID"
+            value={searchReviewId}
+            onChange={(e) => setSearchReviewId(e.target.value)}
           />
-        </label>
-        <label>
-          Rating:
-          <input
-            type="number"
-            value={newReview.rating}
-            onChange={(e) => setNewReview({ ...newReview, rating: e.target.value })}
-            required
-          />
-        </label>
-        <label>
-          Review Text:
-          <textarea
-            value={newReview.review_text}
-            onChange={(e) => setNewReview({ ...newReview, review_text: e.target.value })}
-            required
-          />
-        </label>
-        <button type="submit">Submit Review</button>
-      </form>
+        </Form.Group>
+        <Button variant="primary" onClick={handleSearchReview}>
+          Search
+        </Button>
+      </Form>
+      {reviews.map((review) => (
+        <Card key={review.id} onClick={() => handleReviewClick(review)}>
+          <Card.Body>
+            <Card.Title>Rating: {review.rating}</Card.Title>
+            <Card.Text>Review Text: {review.review_text}</Card.Text>
+            <Card.Text>Date Created: {review.date_created}</Card.Text>
+          </Card.Body>
+        </Card>
+      ))}
+
+      {/* Review Modal */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Review Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Card>
+            <Card.Body>
+              {searchedReview ? (
+                <>
+                  <Card.Title>Rating: {searchedReview.rating}</Card.Title>
+                  <Card.Text>Review Text: {searchedReview.review_text}</Card.Text>
+                  <Card.Text>Date Created: {searchedReview.date_created}</Card.Text>
+                </>
+              ) : (
+                <p>No review found with the specified ID.</p>
+              )}
+            </Card.Body>
+          </Card>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

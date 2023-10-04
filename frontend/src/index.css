@@ -1,13 +1,50 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ReviewList.css */
+.review-list {
+  margin: 20px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.review-list h2 {
+  font-size: 24px;
+}
+
+.review-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.review-list .new-review {
+  margin-top: 20px;
+}
+
+.review-list .new-review input {
+  margin-right: 10px;
+}
+
+.review-list .new-review button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.review-list .new-review button:hover {
+  background-color: #0056b3;
+}
+/* ReviewItem.css */
+.review-item {
+  margin-bottom: 20px;
+}
+
+.review-item .card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.review-item .card-body {
+  padding: 10px;
+}
+
+.review-item .edit-button {
+  margin-right: 10px;
 }
