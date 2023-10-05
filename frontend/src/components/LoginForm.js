@@ -1,41 +1,32 @@
 import React, { useState } from 'react';
-import { Card, Button, Form, Alert } from 'react-bootstrap';
-import { useHistory, Link } from 'react-router-dom';
+import { Form, Button, Alert } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function LoginForm() {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-  });
-  const [showError, setShowError] = useState(false);
-  const history = useHistory();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate(); // Use useNavigate for redirection
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/login', { // Update this URL to match your backend endpoint
+      const response = await fetch('http://127.0.0.1:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
 
       if (response.status === 200) {
-        // Login successful, redirect to the dashboard
-        history.push('/dashboard');
+        // Login successful, show a success message and redirect after a few seconds
+        setShowSuccess(true);
+        setTimeout(() => {
+          navigate('/dashboard'); // Use navigate to redirect to the dashboard route
+        }, 3000); // Redirect after 3 seconds
       } else {
-        // Login failed, display an error message
-        setShowError(true);
+        // Login failed, you can display an error message here
+        alert('Login failed');
       }
     } catch (error) {
       console.error('Error logging in:', error);
@@ -45,33 +36,29 @@ function LoginForm() {
   return (
     <div className="container">
       <div className="form">
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <Form.Group controlId="username">
+        <h1>Login Page</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group>
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              required
               placeholder="Your username"
+              {...register('username', { required: true, maxLength: 25 })}
             />
           </Form.Group>
-          {showError && <Alert variant="danger">Invalid username or password</Alert>}
+          {errors.username && <p style={{ color: 'red' }}><small>Username is required</small></p>}
+          {errors.username?.type === "maxLength" && <p style={{ color: 'red' }}><small>Username should be 25 characters</small></p>}
           <br />
 
-          <Form.Group controlId="password">
+          <Form.Group>
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
               placeholder="Your password"
+              {...register('password', { required: true })}
             />
           </Form.Group>
+          {errors.password && <p style={{ color: 'red' }}><small>Password is required</small></p>}
           <br />
 
           <Form.Group>
@@ -82,8 +69,15 @@ function LoginForm() {
           <br />
 
           <Form.Group>
-            <small>Don't have an account? <Link to="/register">Create One</Link></small>
+            <small>Don't have an account? <a href="/signup">Sign Up</a></small>
           </Form.Group>
+          <br />
+
+          {showSuccess && (
+            <Alert variant="success">
+              Logged in successfully! Redirecting to the dashboard...
+            </Alert>
+          )}
         </form>
       </div>
     </div>
