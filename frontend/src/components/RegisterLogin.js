@@ -148,6 +148,7 @@ function RegisterLogin() {
             ? 'Already have an account? '
             : "Don't have an account? "}
           <button
+           type="button" class="btn btn-info"
             onClick={() =>
               setFormData({
                 ...formData,

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import NavigationBar from './NavigationBar';
+
 
 function CreateReview() {
   const [formData, setFormData] = useState({
@@ -49,6 +51,8 @@ function CreateReview() {
 
   return (
     <div>
+
+      <NavigationBar/>
       <h1>Create Review</h1>
       {message && <Alert variant="success">{message}</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
