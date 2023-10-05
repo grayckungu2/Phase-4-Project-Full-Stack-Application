@@ -35,17 +35,17 @@
   text-decoration: none !important;
 }
 
-/* Style the active navigation link (optional) */
+
 .nav-link.active {
   font-weight: bold;
 }
 
-/* To move the <h1> element to the far left */
+
 .navbar-brand {
   margin-right: auto;
 }
 
-/* To move the list items to the far right */
+
 .nav {
   margin-left: auto;
 }
@@ -57,12 +57,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Adjust the height as needed */
+  height: 100vh; 
 }
 
 /* Style the button */
 .center-container button {
-  margin-top: 20px; /* Add spacing between the button and the list */
+  margin-top: 20px; 
 }
 
 /* Style for individual cards */
