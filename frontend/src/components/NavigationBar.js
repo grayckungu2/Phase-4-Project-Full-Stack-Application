@@ -17,17 +17,17 @@ const NavigationBar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/Login" className="nav-link text-white">
+              <Link to="/register-login" className="nav-link text-white">
                 Login
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/Movies" className="nav-link text-white">
+              <Link to="/MovieList" className="nav-link text-white">
                 Movies
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/Reviews" className="nav-link text-white">
+              <Link to="/ReviewList" className="nav-link text-white">
                 Reviews
               </Link>
             </li>
