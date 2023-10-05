@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import ReviewItem from './components/ReviewItem';
 import ReviewList from './components/ReviewList';
 import CreateReview from './components/CreateReview';
-
+import Home from './components/Home'
 function App() {
   return (
     <Router>
       <div>
-        
+        <Home />
         <nav>
           <ul>
             <li>
