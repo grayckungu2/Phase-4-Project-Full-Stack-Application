@@ -2,11 +2,12 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import ReviewList from './components/ReviewList';
 import CreateReview from './components/CreateReview';
-import UserManagement from './components/UserManagement';
-import MovieList from './components/MovieList'; // Corrected import path
-import CreateMovie from './components/CreateMovie'; // Adjusted import path as needed
-import SignUpPage from './components/SignUpPage'; // Removed the space at the end of the path
-import LoginForm from './components/LoginForm'; // Added import for the LoginForm component
+import MovieList from './components/MovieList';
+import CreateMovie from './components/CreateMovie';
+import UserList from './components/UserList';
+import UserMovieList from './components/UserMovieList';
+import RegisterLogin from './components/RegisterLogin'; // Added import for the RegisterLogin component
+import './App.css'; //
 
 function App() {
   return (
@@ -20,23 +21,22 @@ function App() {
             <li>
               <Link to="/create-review">Create Review</Link>
             </li>
-            <li>
-              <Link to="/reviews/1">Review Item</Link>
-            </li>
-            <li>
-              <Link to="/usermanagement">User Management</Link>
-            </li>
+      
             <li>
               <Link to="/movielist">Movie List</Link>
             </li>
             <li>
               <Link to="/create-movie">Create Movie</Link>
             </li>
+            
             <li>
-              <Link to="/login">Login</Link> {/* Link to the LoginForm component */}
+              <Link to="/user-list">User List</Link>
             </li>
             <li>
-              <Link to="/signup">Sign Up</Link> {/* Link to the SignUpPage component */}
+              <Link to="/user-movies">User Movie List</Link>
+            </li>
+            <li>
+              <Link to="/register-login">Register/Login</Link>
             </li>
           </ul>
         </nav>
@@ -44,11 +44,13 @@ function App() {
         <Routes>
           <Route path="/reviews" element={<ReviewList />} />
           <Route path="/create-review" element={<CreateReview />} />
-          <Route path="/usermanagement" element={<UserManagement />} />
+      
           <Route path="/movielist" element={<MovieList />} />
           <Route path="/create-movie" element={<CreateMovie />} />
-          <Route path="/signup" element={<SignUpPage />} /> {/* Route for SignUpPage */}
-          <Route path="/login" element={<LoginForm />} /> {/* Route for LoginForm */}
+      
+          <Route path="/user-list" element={<UserList />} />
+          <Route path="/user-movies" element={<UserMovieList />} />
+          <Route path="/register-login" element={<RegisterLogin />} />
         </Routes>
       </div>
     </Router>

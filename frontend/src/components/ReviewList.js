@@ -78,8 +78,10 @@ function ReviewList({ movieId }) {
             review.id === selectedReview.id ? selectedReview : review
           )
         );
+        setShowModal(false);
       } else {
-        console.error('Error updating review:', response.statusText);
+        const data = await response.json();
+        console.error('Error updating review:', data.message);
         setNotification('An error occurred while updating the review.');
       }
     } catch (error) {
@@ -87,12 +89,11 @@ function ReviewList({ movieId }) {
       setNotification('An error occurred while updating the review.');
     }
   };
-
   const handleDeleteReview = async () => {
     if (!selectedReview) {
       return;
     }
-
+  
     try {
       const response = await fetch(`http://127.0.0.1:5000/reviews/${selectedReview.id}`, {
         method: 'DELETE',
@@ -101,18 +102,20 @@ function ReviewList({ movieId }) {
         // Review deleted successfully
         setNotification('Review deleted successfully.');
         // Remove the deleted review from the reviews list
-        setReviews(reviews.filter((review) => review.id !== selectedReview.id));
+        setReviews((prevReviews) => prevReviews.filter((review) => review.id !== selectedReview.id));
         setSelectedReview(null);
         setShowModal(false);
       } else {
-        console.error('Error deleting review:', response.statusText);
+        const data = await response.json();
+        console.error('Error deleting review:', data.message);
         setNotification('An error occurred while deleting the review.');
       }
     } catch (error) {
       console.error('Error deleting review:', error);
       setNotification('An error occurred while deleting the review.');
     }
-  };
+  }
+  
 
   return (
     <div>
@@ -184,13 +187,23 @@ function ReviewList({ movieId }) {
             <Card.Content>
               {selectedReview ? (
                 <>
-                  <Card.Header>Rating: {selectedReview.rating}</Card.Header>
-                  <Card.Description>
-                    Review Text: {selectedReview.review_text}
-                  </Card.Description>
-                  <Card.Description>
-                    Date Created: {selectedReview.date_created}
-                  </Card.Description>
+                  <Form>
+                    <Form.Field>
+                      <label>Rating</label>
+                      <input
+                        type="number"
+                        value={selectedReview.rating}
+                        onChange={(e) => setSelectedReview({ ...selectedReview, rating: e.target.value })}
+                      />
+                    </Form.Field>
+                    <Form.Field>
+                      <label>Review Text</label>
+                      <textarea
+                        value={selectedReview.review_text}
+                        onChange={(e) => setSelectedReview({ ...selectedReview, review_text: e.target.value })}
+                      />
+                    </Form.Field>
+                  </Form>
                 </>
               ) : (
                 <Message>

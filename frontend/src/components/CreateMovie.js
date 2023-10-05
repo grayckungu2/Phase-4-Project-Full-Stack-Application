@@ -56,7 +56,7 @@ function CreateMovie({ onMovieCreated }) {
       })
       .catch((error) => {
         console.error('Error creating movie:', error);
-        setErrorMessage('An error occurred while creating the movie listing.');
+        setErrorMessage('.');
       });
   };
 
