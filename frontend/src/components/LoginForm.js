@@ -1,8 +1,6 @@
-    //Login Component: Allows users to log in with their username and password.
-//Registration Component: Allows new users to register with a username, email, and password
 import React, { useState } from 'react';
 import { Card, Button, Form, Alert } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 function LoginForm() {
   const [formData, setFormData] = useState({

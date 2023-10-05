@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import UserManagement from './components/UserManagement'
 import ReviewList from './components/ReviewList';
 import CreateReview from './components/CreateReview';
-import MovieList from './components/MovieList'
-import CreateMovie from './components/CreateMovie'
-import SignUpPage from './components/SignUpPage '
-import Home from './components/Home';
+import UserManagement from './components/UserManagement';
+import MovieList from './components/MovieList'; // Corrected import path
+import CreateMovie from './components/CreateMovie'; // Adjust the import path as needed
+import SignUpPage from './components/SignUpPage '; // Adjust the import path as needed
 
 function App() {
   return (
@@ -35,6 +35,9 @@ function App() {
               <Link to="/create-movie">Create Movie</Link>
             </li>
             <li>
+              <Link to="/login">Login</Link> {/* Link to the LoginForm component */}
+            </li>
+            <li>
               <Link to="/signup">Sign Up</Link> {/* Link to the SignUpPage component */}
             </li>
           </ul>
@@ -46,6 +49,7 @@ function App() {
           <Route path="/usermanagement" element={<UserManagement />} />
           <Route path="/movielist" element={<MovieList/>} />
           <Route path="/create-movie" element={<CreateMovie />} />
+          <Route path="/login" element={<LoginForm />} /> {/* Route for LoginForm */}
           <Route path="/signup" element={<SignUpPage />} /> {/* Route for SignUpPage */}
         </Routes>
       </div>
