@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Modal, Form } from 'react-bootstrap';
+import { Card, Button, Modal, Form, Table, Message } from 'semantic-ui-react';
 
 function ReviewList({ movieId }) {
   const [reviews, setReviews] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
-  const [searchReviewId, setSearchReviewId] = useState('');
-  const [searchedReview, setSearchedReview] = useState(null);
+  const [searchMovieId, setSearchMovieId] = useState('');
+  const [searchedReviews, setSearchedReviews] = useState([]);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -41,73 +42,176 @@ function ReviewList({ movieId }) {
     setShowModal(false);
   };
 
-  const handleSearchReview = async () => {
+  const handleSearchReviewsByMovieId = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/reviews/${searchReviewId}`);
+      const response = await fetch(`http://127.0.0.1:5000/movies/${searchMovieId}/reviews`);
       if (response.ok) {
         const data = await response.json();
-        setSearchedReview(data); // Set the searched review
-        setShowModal(true); // Show modal with the searched review
+        setSearchedReviews(data.reviews);
       } else {
-        console.error('Error fetching review by ID:', response.statusText);
+        console.error('Error fetching reviews by movie ID:', response.statusText);
       }
     } catch (error) {
-      console.error('Error fetching review by ID:', error);
+      console.error('Error fetching reviews by movie ID:', error);
+    }
+  };
+
+  const handleUpdateReview = async () => {
+    if (!selectedReview) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/reviews/${selectedReview.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedReview),
+      });
+      if (response.ok) {
+        // Review updated successfully
+        setNotification('Review updated successfully.');
+        // Update the review in the reviews list
+        setReviews((prevReviews) =>
+          prevReviews.map((review) =>
+            review.id === selectedReview.id ? selectedReview : review
+          )
+        );
+      } else {
+        console.error('Error updating review:', response.statusText);
+        setNotification('An error occurred while updating the review.');
+      }
+    } catch (error) {
+      console.error('Error updating review:', error);
+      setNotification('An error occurred while updating the review.');
+    }
+  };
+
+  const handleDeleteReview = async () => {
+    if (!selectedReview) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/reviews/${selectedReview.id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        // Review deleted successfully
+        setNotification('Review deleted successfully.');
+        // Remove the deleted review from the reviews list
+        setReviews(reviews.filter((review) => review.id !== selectedReview.id));
+        setSelectedReview(null);
+        setShowModal(false);
+      } else {
+        console.error('Error deleting review:', response.statusText);
+        setNotification('An error occurred while deleting the review.');
+      }
+    } catch (error) {
+      console.error('Error deleting review:', error);
+      setNotification('An error occurred while deleting the review.');
     }
   };
 
   return (
     <div>
-      <h2>{movieId ? 'Reviews for Movie' : 'All Reviews'}</h2>
+      <h2>{movieId ? `Reviews for Movie ID ${movieId}` : 'All Reviews'}</h2>
       <Form>
-        <Form.Group controlId="formReviewId">
-          <Form.Label>Search Review by ID</Form.Label>
-          <Form.Control
+        <Form.Field>
+          <label>Search Reviews by Movie ID</label>
+          <Form.Input
             type="number"
-            placeholder="Review ID"
-            value={searchReviewId}
-            onChange={(e) => setSearchReviewId(e.target.value)}
+            placeholder="Movie ID"
+            value={searchMovieId}
+            onChange={(e) => setSearchMovieId(e.target.value)}
           />
-        </Form.Group>
-        <Button variant="primary" onClick={handleSearchReview}>
+        </Form.Field>
+        <Button primary onClick={handleSearchReviewsByMovieId}>
           Search
         </Button>
       </Form>
-      {reviews.map((review) => (
-        <Card key={review.id} onClick={() => handleReviewClick(review)}>
-          <Card.Body>
-            <Card.Title>Rating: {review.rating}</Card.Title>
-            <Card.Text>Review Text: {review.review_text}</Card.Text>
-            <Card.Text>Date Created: {review.date_created}</Card.Text>
-          </Card.Body>
-        </Card>
-      ))}
+
+      <Table celled selectable>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Rating</Table.HeaderCell>
+            <Table.HeaderCell>Review Text</Table.HeaderCell>
+            <Table.HeaderCell>Date Created</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {searchedReviews.length > 0
+            ? searchedReviews.map((review) => (
+                <Table.Row key={review.id}>
+                  <Table.Cell>{review.rating}</Table.Cell>
+                  <Table.Cell>{review.review_text}</Table.Cell>
+                  <Table.Cell>{review.date_created}</Table.Cell>
+                  <Table.Cell>
+                    <Button
+                      primary
+                      onClick={() => handleReviewClick(review)}
+                    >
+                      View
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))
+            : reviews.map((review) => (
+                <Table.Row key={review.id}>
+                  <Table.Cell>{review.rating}</Table.Cell>
+                  <Table.Cell>{review.review_text}</Table.Cell>
+                  <Table.Cell>{review.date_created}</Table.Cell>
+                  <Table.Cell>
+                    <Button
+                      primary
+                      onClick={() => handleReviewClick(review)}
+                    >
+                      View
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+        </Table.Body>
+      </Table>
 
       {/* Review Modal */}
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Review Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Card>
-            <Card.Body>
-              {searchedReview ? (
+      <Modal open={showModal} onClose={handleCloseModal}>
+        <Modal.Header>Review Details</Modal.Header>
+        <Modal.Content>
+          <Card fluid>
+            <Card.Content>
+              {selectedReview ? (
                 <>
-                  <Card.Title>Rating: {searchedReview.rating}</Card.Title>
-                  <Card.Text>Review Text: {searchedReview.review_text}</Card.Text>
-                  <Card.Text>Date Created: {searchedReview.date_created}</Card.Text>
+                  <Card.Header>Rating: {selectedReview.rating}</Card.Header>
+                  <Card.Description>
+                    Review Text: {selectedReview.review_text}
+                  </Card.Description>
+                  <Card.Description>
+                    Date Created: {selectedReview.date_created}
+                  </Card.Description>
                 </>
               ) : (
-                <p>No review found with the specified ID.</p>
+                <Message>
+                  <Message.Header>No review selected.</Message.Header>
+                </Message>
               )}
-            </Card.Body>
+              {notification && <Message success>{notification}</Message>}
+            </Card.Content>
           </Card>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button secondary onClick={handleCloseModal}>
             Close
           </Button>
-        </Modal.Footer>
+          <Button primary onClick={handleUpdateReview}>
+            Update Review
+          </Button>
+          <Button negative onClick={handleDeleteReview}>
+            Delete Review
+          </Button>
+        </Modal.Actions>
       </Modal>
     </div>
   );
