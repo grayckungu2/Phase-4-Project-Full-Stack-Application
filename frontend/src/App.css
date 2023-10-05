@@ -89,13 +89,8 @@ h1 {
   height: 150px;
 }
 
-/* Add more styles as needed */
-
-/* Optional: Add a background color or background image to the container */
+container */
 .container {
   background-color: #f0f0f0;
-  /* Or use a background image */
-  /* background-image: url('your-image.jpg'); */
-  /* background-size: cover; */
-  /* background-repeat: no-repeat; */
+  
 }
