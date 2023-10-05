@@ -6,8 +6,7 @@ import MovieList from './components/MovieList';
 import CreateMovie from './components/CreateMovie';
 import UserList from './components/UserList';
 import UserMovieList from './components/UserMovieList';
-import RegisterLogin from './components/RegisterLogin'; // Added import for the RegisterLogin component
-import './App.css'; //
+import RegisterLogin from './components/RegisterLogin'; 
 
 function App() {
   return (
