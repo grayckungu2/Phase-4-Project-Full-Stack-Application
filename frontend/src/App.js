@@ -1,17 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-
+import UserManagement from './components/UserManagement'
 import ReviewList from './components/ReviewList';
 import CreateReview from './components/CreateReview';
-import UserManagement from './components/UserManagement';
-import MovieList from './components/MovieList'; // Corrected import path
-import CreateMovie from './components/CreateMovie'; // Adjust the import path as needed
-import SignUpPage from './components/SignUpPage '; // Adjust the import path as needed
+import MovieList from './components/MovieList'
+import CreateMovie from './components/CreateMovie'
+import SignUpPage from './components/SignUpPage '
+import Home from './components/Home';
 
 function App() {
   return (
     <Router>
+      <Home/>
       <div>
+       
         <nav>
           <ul>
             <li>
@@ -42,7 +44,7 @@ function App() {
           <Route path="/reviews" element={<ReviewList />} />
           <Route path="/create-review" element={<CreateReview />} />
           <Route path="/usermanagement" element={<UserManagement />} />
-          <Route path="/movielist" element={<MovieList />} />
+          <Route path="/movielist" element={<MovieList/>} />
           <Route path="/create-movie" element={<CreateMovie />} />
           <Route path="/signup" element={<SignUpPage />} /> {/* Route for SignUpPage */}
         </Routes>

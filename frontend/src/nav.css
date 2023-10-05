@@ -1,0 +1,87 @@
+/* Style the navbar */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css");
+
+.navbar {
+  background-color: #343a40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+/* Style the navbar brand text (h1) */
+.navbar-brand {
+  color: #fff;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Style the navigation links */
+.nav {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the navigation link items */
+.nav-item {
+  margin-left: 10px;
+}
+
+/* Style the navigation link text */
+.nav-link {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+
+.nav-link.active {
+  font-weight: bold;
+}
+
+
+.navbar-brand {
+  margin-right: auto;
+}
+
+
+.nav {
+  margin-left: auto;
+}
+
+/* creators */
+/* Center the content vertically and horizontally */
+.center-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; 
+}
+
+/* Style the button */
+.center-container button {
+  margin-top: 20px; 
+}
+
+/* Style for individual cards */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center cards horizontally */
+  gap: 20px; /* Add spacing between cards */
+}
+
+.card {
+  /* Style for individual cards */
+  width: 250px; /* Adjust the card width as needed */
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.card img {
+  max-width: 100%;
+}
