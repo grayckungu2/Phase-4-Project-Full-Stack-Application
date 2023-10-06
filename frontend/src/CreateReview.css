@@ -1,0 +1,23 @@
+/* CreateReview.css */
+
+.create-review-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .create-review-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .create-review-form {
+    width: 80%;
+    max-width: 600px;
+  }
+  
+  .create-review-button {
+    margin-top: 1rem;
+  }

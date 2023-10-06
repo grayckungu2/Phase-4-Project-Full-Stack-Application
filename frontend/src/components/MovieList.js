@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, ListGroup, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // Import the Link component
+import { Link } from 'react-router-dom';
 import NavigationBar from './NavigationBar';
+import '../MovieList.css';
 
 function MovieList() {
   const [movies, setMovies] = useState([]);
@@ -28,7 +29,25 @@ function MovieList() {
 
   return (
     <div>
-      <NavigationBar/>
+      <NavigationBar />
+
+  <div className="featured-card text-center">
+  <div className="card-body">
+    <h5 className="card-title">USER ACTIONS</h5>
+    <Link to="/create-movie" className="btn btn-primary custom-button" style={{ marginRight: '10px' }}>
+      Create Movie
+    </Link>
+    {' '}
+    <Link to="/create-review" style={{ marginRight: '5px' }}>
+      <Button variant="primary">Create Review</Button>
+    </Link>
+    <Link to="/ReviewList" style={{ marginRight: '5px' }}>
+      <Button variant="primary">Search Review</Button>
+    </Link>
+  </div>
+</div>
+
+
       <h2 style={{ textAlign: 'center' }}>LIST OF MOVIES</h2>
       <div className="card-container">
         {movies.map((movie) => (
@@ -45,9 +64,7 @@ function MovieList() {
               <ListGroup.Item>Creator ID: {movie.creator_id}</ListGroup.Item>
             </ListGroup>
             <Card.Body>
-              <Link to="/create-review">
-                <Button variant="primary">Create Review</Button>
-              </Link>
+             
             </Card.Body>
           </Card>
         ))}

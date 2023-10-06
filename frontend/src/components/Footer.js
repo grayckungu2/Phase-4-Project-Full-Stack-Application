@@ -24,7 +24,6 @@ const Footer = () => {
         <div className="card-container">
           {events.map((event) => (
             <div key={event.id} className="card">
-              <img className="card-img-top" src="..." alt="creators" />
               <div className="card-body">
                 <p className="card-text">{event.title}</p>
               </div>

@@ -11,7 +11,7 @@ function MyCarousel() {
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src="../assets/picone.jpg"
+            src="../assets/picfour.jpg"
             alt="First slide"
           />
           <Carousel.Caption>
