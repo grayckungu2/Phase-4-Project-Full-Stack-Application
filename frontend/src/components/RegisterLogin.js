@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import '../login.css'
 
 function RegisterLogin() {
   const [formData, setFormData] = useState({
@@ -147,6 +148,7 @@ function RegisterLogin() {
             ? 'Already have an account? '
             : "Don't have an account? "}
           <button
+           type="button" class="btn btn-info"
             onClick={() =>
               setFormData({
                 ...formData,

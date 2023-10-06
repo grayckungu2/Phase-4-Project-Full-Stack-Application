@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'react-bootstrap';
+import { Card, ListGroup, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import NavigationBar from './NavigationBar';
+import '../MovieList.css';
 
 function MovieList() {
   const [movies, setMovies] = useState([]);
@@ -26,29 +29,46 @@ function MovieList() {
 
   return (
     <div>
-      <h2>List of Movies</h2>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Release Date</th>
-            <th>Genre</th>
-            <th>Creator ID</th>
-          </tr>
-        </thead>
-        <tbody>
-          {movies.map((movie) => (
-            <tr key={movie.id}>
-              <td>{movie.id}</td>
-              <td>{movie.title}</td>
-              <td>{movie.release_date}</td>
-              <td>{movie.genre}</td>
-              <td>{movie.creator_id}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <NavigationBar />
+
+  <div className="featured-card text-center">
+  <div className="card-body">
+    <h5 className="card-title">USER ACTIONS</h5>
+    <Link to="/create-movie" className="btn btn-primary custom-button" style={{ marginRight: '10px' }}>
+      Create Movie
+    </Link>
+    {' '}
+    <Link to="/create-review" style={{ marginRight: '5px' }}>
+      <Button variant="primary">Create Review</Button>
+    </Link>
+    <Link to="/ReviewList" style={{ marginRight: '5px' }}>
+      <Button variant="primary">Search Review</Button>
+    </Link>
+  </div>
+</div>
+
+
+      <h2 style={{ textAlign: 'center' }}>LIST OF MOVIES</h2>
+      <div className="card-container">
+        {movies.map((movie) => (
+          <Card key={movie.id} style={{ width: '18rem' }}>
+            <Card.Img variant="top" src={movie.imageUrl} alt={movie.title} />
+            <Card.Body>
+              <Card.Title>{movie.title}</Card.Title>
+              <Card.Text>{movie.description}</Card.Text>
+            </Card.Body>
+            <ListGroup className="list-group-flush">
+              <ListGroup.Item>ID: {movie.id}</ListGroup.Item>
+              <ListGroup.Item>Release Date: {movie.release_date}</ListGroup.Item>
+              <ListGroup.Item>Genre: {movie.genre}</ListGroup.Item>
+              <ListGroup.Item>Creator ID: {movie.creator_id}</ListGroup.Item>
+            </ListGroup>
+            <Card.Body>
+             
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
