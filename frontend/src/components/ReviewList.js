@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Modal, Form, Table, Message } from 'semantic-ui-react';
 
+import 'semantic-ui-css/semantic.min.css';
+import NavigationBar from './NavigationBar';
+
 function ReviewList({ movieId }) {
   const [reviews, setReviews] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -118,7 +121,10 @@ function ReviewList({ movieId }) {
   
 
   return (
-    <div>
+    <>
+
+    <NavigationBar/>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h2>{movieId ? `Reviews for Movie ID ${movieId}` : 'All Reviews'}</h2>
       <Form>
         <Form.Field>
@@ -227,6 +233,8 @@ function ReviewList({ movieId }) {
         </Modal.Actions>
       </Modal>
     </div>
+    </>
+    
   );
 }
 
