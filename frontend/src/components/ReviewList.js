@@ -128,10 +128,10 @@ function ReviewList({ movieId }) {
       <h2>{movieId ? `Reviews for Movie ID ${movieId}` : 'All Reviews'}</h2>
       <Form>
         <Form.Field>
-          <label>Search Reviews by Movie ID</label>
+          <label>Search Reviews by Review ID</label>
           <Form.Input
             type="number"
-            placeholder="Movie ID"
+            placeholder="Review ID"
             value={searchMovieId}
             onChange={(e) => setSearchMovieId(e.target.value)}
           />
