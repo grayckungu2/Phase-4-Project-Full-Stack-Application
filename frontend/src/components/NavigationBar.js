@@ -16,11 +16,11 @@ const NavigationBar = () => {
                 Home
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/register-login" className="nav-link text-white">
                 Login
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link to="/MovieList" className="nav-link text-white">
                 Movies

@@ -77,7 +77,7 @@ function RegisterLogin(props) {
 
           // Redirect to the homepage after a delay
           setTimeout(() => {
-            navigate('/');
+            navigate('/Home');
           }, 3000);
 
         
