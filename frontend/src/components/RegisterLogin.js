@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import '../login.css'
 
 function RegisterLogin(props) {
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate(); 
 
   const [formData, setFormData] = useState({
     username: '',
