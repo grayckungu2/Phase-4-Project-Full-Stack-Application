@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, g
+from flask import Flask, request, jsonify, render_template, g
 from flask_cors import CORS
 from models.movie import Movie
 from models.review import Review
@@ -7,16 +7,17 @@ from models.user import User
 import os
 from models.dbconfig import db
 from config import SQLAlchemyConfig
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, validators
 from wtforms.validators import DataRequired, Length, EqualTo, Email
-from flask_bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt, generate_password_hash,check_password_hash
+import jwt
 
 # create_app function
 def create_app():
     app = Flask(__name__)
-    app.secret_key = 'your_secret_key'
+    app.secret_key = 'your_secret_key'  # Replace with a secure secret key
     CORS(app)
 
     # Initialize database
@@ -24,8 +25,6 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLAlchemyConfig.SQLALCHEMY_TRACK_MODIFICATIONS
     db.init_app(app)
     bcrypt = Bcrypt(app)
-
-
 
     # Define the RegistrationForm
     class RegistrationForm(FlaskForm):
@@ -47,49 +46,61 @@ def create_app():
     def app_path():
         g.path = os.path.abspath(os.getcwd())
 
-    # Combined registration and login route
-    @app.route('/register-login', methods=['GET', 'POST'])
-    def register_login():
-        register_form = RegistrationForm(request.form)
-        login_form = LoginForm(request.form)
+    
 
-        if request.method == 'POST':
-            if 'register' in request.form:
-                if register_form.validate():
-                    username = register_form.username.data
-                    email = register_form.email.data
-                    password = bcrypt.generate_password_hash(register_form.password.data).decode('utf-8')
-
-                    # Create a new user and add it to the database
-                    new_user = User(username=username, email=email, password=password)
-                    db.session.add(new_user)
-                    db.session.commit()
-
-                    flash('Thanks for registering')
-                    return redirect(url_for('login'))
-                else:
-                    flash('Registration form validation failed.')
-
-            elif 'login' in request.form:
-                if login_form.validate():
-                    username = login_form.username.data
-                    password = login_form.password.data
-
-                    user = User.query.filter_by(username=username).first()
-                    if user and bcrypt.check_password_hash(user.password, password):
-                        flash('Logged in successfully')
-                        return redirect(url_for('dashboard'))
-                    else:
-                        flash('Invalid username or password')
-                else:
-                    flash('Login form validation failed.')
-
-        return render_template('register_login.html', register_form=register_form, login_form=login_form)
+    @app.route('/register', methods=['POST'])
+    def register():
+         data = request.get_json()
+         username = data.get('username')
+         email = data.get('email')
+         password = data.get('password')
 
 
+        #  hashed_password = generate_password_hash(password, method='sha256')
+         hashed_password = generate_password_hash(password)
+         new_user = User(username=username, password=hashed_password,email=email)
+
+         db.session.add(new_user)
+         db.session.commit()
+
+         return jsonify({'message': 'User registered successfully'}) 
+   
+    
+
+    @app.route('/login', methods=['POST'])
+    def login():
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password, password):
+        # Replace 'your_secret_key' with your actual secret key
+            secret_key = 'your_actual_secret_key'
+        
+        # Set the expiration time to 1 hour from now
+            expiration_time = datetime.utcnow() + timedelta(hours=1)
+        
+        # Generate the JWT token with the 'exp' claim
+            token = jwt.encode({'user_id': user.id, 'exp': expiration_time}, secret_key, algorithm='HS256')
+            print(token)
+        
+            return jsonify({'message': 'Login successful', 'token': token})
+        else:
+            return jsonify({'message': 'Invalid username or password'}), 401
 
 
-    # REST API routes for movies and reviews
+    # Helper function to decode the token 
+    def decode_token(token):
+        try:
+            payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
+            return payload
+        except jwt.ExpiredSignatureError:
+            return 'Token has expired. Please log in again.'
+        except jwt.InvalidTokenError:
+            return 'Invalid token. Please log in again.'
+    
 
     @app.route('/movies/<int:movie_id>/reviews', methods=['POST'])
     def create_review(movie_id):
