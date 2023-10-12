@@ -11,16 +11,16 @@ const NavigationBar = () => {
         </div>
         <div className="navbar-links">
           <ul className="nav">
-            <li className="nav-item">
-              <Link to="/" className="nav-link text-white">
+            {/* <li className="nav-item">
+              <Link to="/Home" className="nav-link text-white">
                 Home
               </Link>
-            </li>
-            <li className="nav-item">
+            </li> */}
+            {/* <li className="nav-item">
               <Link to="/register-login" className="nav-link text-white">
                 Login
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link to="/MovieList" className="nav-link text-white">
                 Movies

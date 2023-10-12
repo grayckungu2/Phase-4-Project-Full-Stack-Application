@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+// import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import '../login.css'
 
-function RegisterLogin() {
+function RegisterLogin(props) {
+  const navigate = useNavigate(); 
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -68,13 +72,15 @@ function RegisterLogin() {
           // Login successful, display a success message
           setFormData({
             ...formData,
-            message: 'Login successful. Redirecting to dashboard...',
+            message: 'Login successful. Redirecting to Home...',
           });
 
-          // Redirect to the dashboard after a delay
+          // Redirect to the homepage after a delay
           setTimeout(() => {
-            window.location.href = '/dashboard';
+            navigate('/Home');
           }, 3000);
+
+        
         } else {
           // Login failed, display an error message
           const data = await response.json();
